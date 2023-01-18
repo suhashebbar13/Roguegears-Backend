@@ -24,7 +24,7 @@ exports.createProduct = (req, res) => {
     description,
     productPictures,
     category,
-    createdBy: req.user._id,
+    // createdBy: req.user._id,
   });
 
   product.save((error, product) => {
