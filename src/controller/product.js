@@ -24,7 +24,7 @@ exports.createProduct = (req, res) => {
     description,
     productPictures,
     category,
-    // createdBy: req.user._id,
+    createdBy: req.user._id,
   });
 
   product.save((error, product) => {
@@ -116,7 +116,7 @@ exports.deleteProductById = (req, res) => {
 };
 
 exports.getProducts = async (req, res) => {
-  const products = await Product.find({ createdBy: req.user._id })
+  const products = await Product.find({ role: 'super-admin' })
     .select("_id name price offer quantity slug description productPictures category")
     .populate({ path: "category", select: "_id name" })
     .exec();
