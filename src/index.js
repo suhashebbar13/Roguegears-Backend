@@ -37,7 +37,7 @@ mongoose
   });
 
 app.use(cors({
-  origin: "https://long-cyan-llama-wear.cyclic.app",
+  origin: "*",
 }));
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "uploads")));
