@@ -19,7 +19,7 @@ const adminOrderRoute = require("./routes/admin/order.routes");
 
 //environment variable or you can say constants
 env.config();
-
+require("dotenv").config();
 // mongodb connection
 //mongodb+srv://root:<password>@cluster0.8pl1w.mongodb.net/<dbname>?retryWrites=true&w=majority
 mongoose
