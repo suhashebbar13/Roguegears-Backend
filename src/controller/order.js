@@ -49,6 +49,21 @@ exports.getOrders = (req, res) => {
     });
 };
 
+exports.deleteOrderById = (req, res) => {
+  const { OrderId } = req.body.payload;
+  if (OrderId) {
+    Order.deleteOne({ _id: OrderId }).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        
+        res.status(202).json({ result });
+      }
+    });
+  } else {
+    res.status(400).json({ error: "Params required" });
+  }
+};
+
 exports.getOrder = (req, res) => {
   Order.findOne({ _id: req.body.orderId })
     .populate("items.productId", "_id name productPictures")

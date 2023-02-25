@@ -35,7 +35,7 @@ exports.signup = (req, res) => {
 
       if (user) {
         const token = generateJwtToken(user._id, user.role,{
-          expiresIn: '2d'
+          expiresIn: '2D'
         });
         const { _id, firstName, lastName, email, role, fullName } = user;
         return res.status(201).json({
@@ -75,4 +75,20 @@ exports.signin = (req, res) => {
       return res.status(400).json({ message: "Something went wrong" });
     }
   });
+};
+
+exports.getusers = (req,res) =>{
+  User.findOne({email:req.body.email}).exec(async (error, user) => {
+    if (error) return res.status(400).json({ error });
+    if (user) {
+      const { _id, firstName, lastName, email, role, fullName } = user;
+        res.status(200).json({
+          token,
+          user: { _id, firstName, lastName, email, role, fullName },
+        })
+    }else{
+      return res.status(400).json({
+        message: "Something went wrong",
+      });
+    }})
 };

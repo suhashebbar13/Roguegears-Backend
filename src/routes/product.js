@@ -11,11 +11,14 @@ const {
   getProductDetailsById,
   deleteProductById,
   getProducts,
+  createProductReview,
+  deleteReviewsById
 } = require("../controller/product");
 const multer = require("multer");
 const router = express.Router();
 const shortid = require("shortid");
 const path = require("path");
+const { signin } = require("../controller/auth");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -37,8 +40,10 @@ router.post(
   createProduct
 );
 router.get("/products/:slug", getProductsBySlug);
+router.post("/products/:slug/reviews", requireSignin, createProductReview);
 //router.get('/category/getcategory', getCategories);
 router.get("/product/:productId", getProductDetailsById);
+router.delete("/product/deleteResviewById", requireSignin, adminMiddleware, deleteReviewsById);
 router.delete(
   "/product/deleteProductById",
   requireSignin,

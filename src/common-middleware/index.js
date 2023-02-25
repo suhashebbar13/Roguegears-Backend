@@ -4,6 +4,8 @@ const shortid = require("shortid");
 const path = require("path");
 const multerS3 = require("multer-s3");
 const aws = require("aws-sdk");
+const User = require("../models/user");
+const asyncHandler = require('express-async-handler'); 
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -38,17 +40,18 @@ exports.upload = multer({ storage });
 //   }),
 // });
 
-exports.requireSignin = (req, res, next) => {
+exports.requireSignin = asyncHandler(async(req, res, next) => {
   if (req.headers.authorization) {
     const token = req.headers.authorization.split(" ")[1];
     const user = jwt.verify(token, process.env.JWT_KEY);
-    req.user = user;
+    const usercontent = await User.findById(user._id).select('-password')
+    req.user = Object.assign({}, user, usercontent);
   } else {
     return res.status(400).json({ message: "Authorization required" });
   }
   next();
   //jwt.decode()
-};
+});
 
 exports.userMiddleware = (req, res, next) => {
   if (req.user.role !== "user") {
